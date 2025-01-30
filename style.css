@@ -1,0 +1,16 @@
+.scroll-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto !important;
+    white-space: nowrap;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.long-text {
+    display: inline-block;
+    font-size: 22px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    min-width: 1200px;
+}
