@@ -5,23 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tra cứu âm giai...</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .scroll-container {
-            width: 130ch;
-            max-width: 130ch;
-            overflow-x: auto !important;
-            white-space: nowrap;
-            border: 1px solid #ccc;
-            padding: 1px;
-        }
-        .long-text {
-            display: inline-block;
-            font-size: 22px;
-            font-family: monospace;
-            white-space: pre;
-            min-width: 1200px;
-        }
-    </style>
+	<style>
+    /* CSS cho bảng */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid black;
+    }
+    th, td {
+        padding: 8px;
+        text-align: left;
+    }
+
+    /* CSS cho container cuộn ngang */
+    .scroll-container {
+        width: 130ch;
+        max-width: 130ch;
+        overflow-x: auto !important;
+        white-space: nowrap;
+        border: 1px solid #ccc;
+        padding: 1px;
+    }
+    .long-text {
+        display: inline-block;
+        font-size: 22px;
+        font-family: monospace;
+        white-space: pre;
+        min-width: 1200px;
+    }
+	</style>
+
 </head>
 <body onload="scrollToMiddle()">
 
@@ -50,6 +65,283 @@ GIAI|<span style="font-style: italic; background-color: lightgreen;">  </span>| 
             });
         }
     </script>
+	<h1>Thông tin bổ sung của Âm giai</h1>
+    <select id="scaleSelect">
+        <option value="all">Show All</option>
+        <option value="A major">A major (La trưởng)</option>
+        <option value="A minor">A minor (La thứ)</option>
+        <option value="A# major">A# major (A# trưởng)</option>
+        <option value="A# minor">A# minor (A# thứ)</option>
+        <option value="B major">B major (Si trưởng)</option>
+        <option value="B minor">B minor (Si thứ)</option>
+        <option value="C major">C major (Đô trưởng)</option>
+        <option value="C minor">C minor (Đô thứ)</option>
+        <option value="C# major">C# major (Đô thăng trưởng)</option>
+        <option value="C# minor">C# minor (Đô thăng thứ)</option>
+        <option value="D major">D major (Rê trưởng)</option>
+        <option value="D minor">D minor (Rê thứ)</option>
+        <option value="D# major">D# major (Rê thăng trưởng)</option>
+        <option value="D# minor">D# minor (Rê thăng thứ)</option>
+        <option value="E major">E major (Mi trưởng)</option>
+        <option value="E minor">E minor (Mi thứ)</option>
+        <option value="F major">F major (Fa trưởng)</option>
+        <option value="F minor">F minor (Fa thứ)</option>
+        <option value="F# major">F# major (Fa thăng trưởng)</option>
+        <option value="F# minor">F# minor (Fa thăng thứ)</option>
+        <option value="G major">G major (Sol trưởng)</option>
+        <option value="G minor">G minor (Sol thứ)</option>
+        <option value="G# major">G# major (Sol thăng trưởng)</option>
+        <option value="G# minor">G# minor (Sol thăng thứ)</option>
+    </select>
+    <button onclick="searchScale()">Tìm Kiếm</button>
 
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>Âm giai</th>
+                <th>Dấu hiệu nhận biết</th>
+                <th>Nốt trong âm giai</th>
+                <th>Hợp âm</th>
+                <th>Cấu tạo hợp âm</th>
+                <th>Thống kê nốt nhạc</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        const data = [
+    {
+        "Âm giai": "A major (La trưởng)",
+        "Dấu hiệu nhận biết": "3 dấu thăng (F#, C#, G#)",
+        "Nốt trong âm giai": "A - B - C# - D - E - F# - G#",
+        "Hợp âm": "A, Bm, C#m, D, E, F#m, G#dim",
+        "Cấu tạo hợp âm": "A (A,C#,E), Bm (B,D,F#), C#m (C#,E,G#), D (D,F#,A), E (E,G#,B), F#m (F#,A,C#), G#dim (G#,B,D)",
+        "Thống kê nốt nhạc": "A(A,D,F#m), B(Bm,E,G#dim), C#(A,C#m,F#m), D(Bm,D,G#dim), E(A,C#m,E), F#(Bm,D,F#m), G#(C#m,E,G#dim)"
+    },
+    {
+        "Âm giai": "A minor (La thứ)",
+        "Dấu hiệu nhận biết": "Không có dấu (#,♭)",
+        "Nốt trong âm giai": "A - B - C - D - E - F - G",
+        "Hợp âm": "Am, Bdim, C, Dm, Em, F, G",
+        "Cấu tạo hợp âm": "Am (A,C,E), Bdim (B,D,F), C (C,E,G), Dm (D,F,A), Em (E,G,B), F (F,A,C), G (G,B,D)",
+        "Thống kê nốt nhạc": "A(Am,Dm,F), B(Bdim,Em,G), C(Am,C,F), D(Bdim,Dm), E(Am,Em), F(Bdim,Dm,F), G(C,Em,G)"
+    },
+    {
+        "Âm giai": "A# major (A# trưởng)",
+        "Dấu hiệu nhận biết": "2 dấu giáng (Bb, Eb)",
+        "Nốt trong âm giai": "Bb - C - D - Eb - F - G - A",
+        "Hợp âm": "Bb, Cm, Dm, Eb, F, Gm, Adim",
+        "Cấu tạo hợp âm": "Bb (Bb,D,F), Cm (C,Eb,G), Dm (D,F,A), Eb (Eb,G,Bb), F (F,A,C), Gm (G,Bb,D), Adim (A,C,Eb)",
+        "Thống kê nốt nhạc": "A(Dm,F,Adim), Bb(Bb,Eb,Gm), C(Cm,F,Adim), D(Bb,Dm,Gm), Eb(Cm,Eb), F(Bb,Dm,F), G(Cm,Eb,Gm)"
+    },
+    {
+        "Âm giai": "A# minor (A# thứ)",
+        "Dấu hiệu nhận biết": "5 dấu giáng (Bb, Eb, Ab, Db, Gb)",
+        "Nốt trong âm giai": "Bb - C - Db - Eb - F - Gb - Ab",
+        "Hợp âm": "Bbm, Cdim, Db, Ebm, Fm, Gb, Ab",
+        "Cấu tạo hợp âm": "Bbm (Bb,Db,F), Cdim (C,Eb,Gb), Db (Db,F,Ab), Ebm (Eb,Gb,Bb), Fm (F,Ab,C), Gb (Gb,Bb,Db), Ab (Ab,C,Eb)",
+        "Thống kê nốt nhạc": "Ab(Db,Fm,Ab), Bb(Bbm,Ebm,Gb), C(Cdim,Fm), Db(Bbm,Db,Gb), Eb(Cdim,Ebm), F(Bbm,Fm), Gb(Cdim,Ebm,Gb)"
+    },
+    {
+        "Âm giai": "B major (Si trưởng)",
+        "Dấu hiệu nhận biết": "5 dấu thăng (#) (F#, C#, G#, D#, A#)",
+        "Nốt trong âm giai": "B - C# - D# - E - F# - G# - A#",
+        "Hợp âm": "B, C#m, D#m, E, F#, G#m, A#dim",
+        "Cấu tạo hợp âm": "B (B,D#,F#), C#m (C#,E,G#), D#m (D#,F#,A#), E (E,G#,B), F# (F#,A#,C#), G#m (G#,B,D#), A#dim (A#,C#,E)",
+        "Thống kê nốt nhạc": "B(B,E,G#m), C#(C#m,F#,A#dim), D#(B,D#m,G#m), E(C#m,E), F#(B,D#m,F#), G#(C#m,E,G#m), A#(D#m,F#,A#dim)"
+    },
+    {
+        "Âm giai": "B minor (Si thứ)",
+        "Dấu hiệu nhận biết": "2 dấu thăng (F#, C#)",
+        "Nốt trong âm giai": "B - C# - D - E - F# - G - A",
+        "Hợp âm": "Bm, C#dim, D, Em, F#m, G, A",
+        "Cấu tạo hợp âm": "Bm (B,D,F#), C#dim (C#,E,G), D (D,F#,A), Em (E,G,B), F#m (F#,A,C#), G (G,B,D), A (A,C#,E)",
+        "Thống kê nốt nhạc": "A(D,F#m,A), B(Bm,Em,G), C#(C#dim,F#m,A), D(Bm,D), E(C#dim,Em), F#(Bm,D,F#m), G(C#dim,Em,G)"
+    },
+    {
+        "Âm giai": "C major (Đô trưởng)",
+        "Dấu hiệu nhận biết": "Không có dấu (#,♭)",
+        "Nốt trong âm giai": "C - D - E - F - G - A - B",
+        "Hợp âm": "C, Dm, Em, F, G, Am, Bdim",
+        "Cấu tạo hợp âm": "C (C,E,G), Dm (D,F,A), Em (E,G,B), F (F,A,C), G (G,B,D), Am (A,C,E), Bdim (B,D,F)",
+        "Thống kê nốt nhạc": "A(Dm,Am), B(Em,Bdim), C(C,F,Am), D(Dm,G,Bdim), E(C,Em), F(Dm,F), G(C,Em,G)"
+    },
+    {
+        "Âm giai": "C minor (Đô thứ)",
+        "Dấu hiệu nhận biết": "3 dấu giáng (Bb, Eb, Ab)",
+        "Nốt trong âm giai": "C - D - Eb - F - G - Ab - Bb",
+        "Hợp âm": "Cm, Ddim, Eb, Fm, Gm, Ab, Bb",
+        "Cấu tạo hợp âm": "Cm (C,Eb,G), Ddim (D,F,Ab), Eb (Eb,G,Bb), Fm (F,Ab,C), Gm (G,Bb,D), Ab (Ab,C,Eb), Bb (Bb,D,F)",
+        "Thống kê nốt nhạc": "Ab(Ddim,Fm,Ab), Bb(Eb,Gm,Bb), C(Cm,Fm,Ab), D(Ddim,Gm), Eb(Cm,Eb,Gm), F(Ddim,Fm), G(Cm,Gm)"
+    },
+    {
+        "Âm giai": "C# major (Đô thăng trưởng)",
+        "Dấu hiệu nhận biết": "7 dấu thăng (#) (F#, C#, G#, D#, A#, E#, B#)",
+        "Nốt trong âm giai": "C# - D# - E# - F# - G# - A# - B#",
+        "Hợp âm": "C#, D#m, E#m, F#, G#, A#m, B#dim",
+        "Cấu tạo hợp âm": "C# (C#,E#,G#), D#m (D#,F#,A#), E#m (E#,G#,B#), F# (F#,A#,C#), G# (G#,B#,D#), A#m (A#,C#,E#), B#dim (B#,D#,F#)",
+        "Thống kê nốt nhạc": "A#(D#m,A#m), B#(E#m,B#dim), C#(C#,F#,A#m), D#(D#m,G#,B#dim), E#(C#,E#m), F#(D#m,F#), G#(C#,E#m,G#)"
+    },
+    {
+        "Âm giai": "C# minor (Đô thăng thứ)",
+        "Dấu hiệu nhận biết": "4 dấu thăng (#) (F#, C#, G#, D#)",
+        "Nốt trong âm giai": "C# - D# - E - F# - G# - A - B",
+        "Hợp âm": "C#m, D#dim, E, F#m, G#m, A, B",
+        "Cấu tạo hợp âm": "C#m (C#,E,G#), D#dim (D#,F#,A), E (E,G#,B), F#m (F#,A,C#), G#m (G#,B,D#), A (A,C#,E), B (B,D#,F#)",
+        "Thống kê nốt nhạc": "A(D#dim,A), B(E,G#m,B), C#(C#m,F#m,A), D#(D#dim,G#m), E(C#m,E), F#(D#dim,F#m), G#(C#m,G#m)"
+    },
+    {
+        "Âm giai": "D major (Rê trưởng)",
+        "Dấu hiệu nhận biết": "2 dấu thăng (F#, C#)",
+        "Nốt trong âm giai": "D - E - F# - G - A - B - C#",
+        "Hợp âm": "D, Em, F#m, G, A, Bm, C#dim",
+        "Cấu tạo hợp âm": "D (D,F#,A), Em (E,G,B), F#m (F#,A,C#), G (G,B,D), A (A,C#,E), Bm (B,D,F#), C#dim (C#,E,G)",
+        "Thống kê nốt nhạc": "A(D,F#m,A), B(Em,Bm), C#(F#m,C#dim), D(D,Bm), E(Em,A), F#(D,F#m,Bm), G(Em,G)"
+    },
+    {
+        "Âm giai": "D minor (Rê thứ)",
+        "Dấu hiệu nhận biết": "1 dấu giáng (♭) (Bb)",
+        "Nốt trong âm giai": "D - E - F - G - A - Bb - C",
+        "Hợp âm": "Dm, Edim, F, Gm, Am, Bb, C",
+        "Cấu tạo hợp âm": "Dm (D,F,A), Edim (E,G,Bb), F (F,A,C), Gm (G,Bb,D), Am (A,C,E), Bb (Bb,D,F), C (C,E,G)",
+        "Thống kê nốt nhạc": "A(Dm,Am), Bb(Gm,Bb), C(F,Am,C), D(Dm,Gm,Bb), E(Edim,Am), F(Dm,F), G(Edim,Gm)"
+    },
+    {
+        "Âm giai": "D# major (Rê thăng trưởng)",
+        "Dấu hiệu nhận biết": "5 dấu thăng (#) (F#, C#, G#, D#, A#)",
+        "Nốt trong âm giai": "D# - E# - F## - G# - A# - B# - C##",
+        "Hợp âm": "D#, E#m, F##m, G#, A#, B#, C##dim",
+        "Cấu tạo hợp âm": "D# (D#,F##,A#), E#m (E#,G#,B#), F##m (F##,A#,C##), G# (G#,B#,D#), A# (A#,C##,E#), B# (B#,D#,F##), C##dim (C##,E#,G#)",
+        "Thống kê nốt nhạc": "A#(D#,F##m,A#), B#(E#m,B#), C##(F##m,C##dim), D#(D#,G#,B#), E#(E#m,A#), F##(D#,F##m,C##dim), G#(E#m,G#)"
+    },
+    {
+        "Âm giai": "D# minor (Rê thăng thứ)",
+        "Dấu hiệu nhận biết": "6 dấu thăng (#) (F#, C#, G#, D#, A#, E#)",
+        "Nốt trong âm giai": "D# - E# - F# - G# - A# - B - C#",
+        "Hợp âm": "D#m, E#dim, F#, G#m, A#m, B, C#",
+        "Cấu tạo hợp âm": "D#m (D#,F#,A#), E#dim (E#,G#,B), F# (F#,A#,C#), G#m (G#,B,D#), A#m (A#,C#,E#), B (B,D#,F#), C# (C#,E#,G#)",
+        "Thống kê nốt nhạc": "A#(D#m,A#m), B(E#dim,B), C#(F#,A#m,C#), D#(D#m,G#m,B), E#(E#dim,A#m), F#(D#m,F#), G#(E#dim,G#m)"
+    },
+    {
+        "Âm giai": "E major (E trưởng)",
+        "Dấu hiệu nhận biết": "4 dấu thăng (F#, C#, G#, D#)",
+        "Nốt trong âm giai": "E, F#, G#, A, B, C#, D#",
+        "Hợp âm": "E, F#m, G#m, A, B, C#m, D#dim",
+        "Cấu tạo hợp âm": "E (E,G#,B), F#m (F#,A,C#), G#m (G#,B,D#), A (A,C#,E), B (B,D#,F#), C#m (C#,E,G#), D#dim (D#,F#,A)",
+        "Thống kê nốt nhạc": "A(F#m,A), B(E,G#m,B), C#(F#m,C#m), D#(G#m,D#dim), E(E,A,C#m), F#(F#m,B,D#dim), G#(E,G#m)"
+    },
+    {
+        "Âm giai": "E minor (Mi thứ)",
+        "Dấu hiệu nhận biết": "1 dấu thăng (#) (F#)",
+        "Nốt trong âm giai": "E - F# - G - A - B - C - D",
+        "Hợp âm": "Em, F#dim, G, Am, Bm, C, D",
+        "Cấu tạo hợp âm": "Em (E,G,B), F#dim (F#,A,C), G (G,B,D), Am (A,C,E), Bm (B,D,F#), C (C,E,G), D (D,F#,A)",
+        "Thống kê nốt nhạc": "A(F#dim,Am), B(Em,Bm), C(Am,C), D(G,Bm,D), E(Em,Am), F#(F#dim,Bm), G(Em,G)"
+    },
+    {
+        "Âm giai": "F major (Fa trưởng)",
+        "Dấu hiệu nhận biết": "1 dấu giáng (♭) (Bb)",
+        "Nốt trong âm giai": "F - G - A - Bb - C - D - E",
+        "Hợp âm": "F, Gm, Am, Bb, C, Dm, Edim",
+        "Cấu tạo hợp âm": "F (F,A,C), Gm (G,Bb,D), Am (A,C,E), Bb (Bb,D,F), C (C,E,G), Dm (D,F,A), Edim (E,G,Bb)",
+        "Thống kê nốt nhạc": "A(F,Am), Bb(Gm,Bb), C(F,C), D(Gm,Dm), E(Am,Edim), F(F,Bb,Dm), G(Gm,C,Edim)"
+    },
+    {
+        "Âm giai": "F minor (Fa thứ)",
+        "Dấu hiệu nhận biết": "4 dấu giáng (Bb, Eb, Ab, Db)",
+        "Nốt trong âm giai": "F, G, Ab, Bb, C, Db, Eb",
+        "Hợp âm": "Fm, Gdim, Ab, Bbm, Cm, Db, Eb",
+        "Cấu tạo hợp âm": "Fm (F,Ab,C), Gdim (G,Bb,Db), Ab (Ab,C,Eb), Bbm (Bb,Db,F), Cm (C,Eb,G), Db (Db,F,Ab), Eb (Eb,G,Bb)",
+        "Thống kê nốt nhạc": "Ab(Fm,Ab), Bb(Gdim,Bbm), C(Fm,Cm), Db(Bbm,Db), Eb(Ab,Cm,Eb), F(Fm,Bbm), G(Gdim,Cm)"
+    },
+    {
+        "Âm giai": "F# (Fa thăng trưởng)",
+        "Dấu hiệu nhận biết": "6 dấu thăng (F#, C#, G#, D#, A#, E#)",
+        "Nốt trong âm giai": "F#, G#, A#, B, C#, D#, E#",
+        "Hợp âm": "F#, G#m, A#m, B, C#, D#m, E#dim",
+        "Cấu tạo hợp âm": "F# (F#,A#,C#), G#m (G#,B,D#), A#m (A#,C#,E#), B (B,D#,F#), C# (C#,E#,G#), D#m (D#,F#,A#), E#dim (E#,G#,B)",
+        "Thống kê nốt nhạc": "A#(F#,A#m), B(G#m,B), C#(F#,C#), D#(G#m,D#m), E#(A#m,E#dim), F#(F#,B,D#m), G#(G#m,C#,E#dim)"
+    },
+    {
+        "Âm giai": "F# minor (F thăng thứ)",
+        "Dấu hiệu nhận biết": "3 dấu thăng (F#, C#, G#)",
+        "Nốt trong âm giai": "F#, G#, A, B, C#, D, E",
+        "Hợp âm": "F#m, G#dim, A, Bm, C#m, D, E",
+        "Cấu tạo hợp âm": "F#m (F#,A,C#), G#dim (G#,B,D), A (A,C#,E), Bm (B,D,F#), C#m (C#,E,G#), D (D,F#,A), E (E,G#,B)",
+        "Thống kê nốt nhạc": "A(F#m,A), B(G#dim,Bm), C#(F#m,C#m), D(Bm,D), E(A,C#m,E), F#(F#m,Bm), G#(G#dim,C#m)"
+    },
+    {
+        "Âm giai": "G major (Sol trưởng)",
+        "Dấu hiệu nhận biết": "1 dấu thăng (#) (F#)",
+        "Nốt trong âm giai": "G - A - B - C - D - E - F#",
+        "Hợp âm": "G, Am, Bm, C, D, Em, F#dim",
+        "Cấu tạo hợp âm": "G (G,B,D), Am (A,C,E), Bm (B,D,F#), C (C,E,G), D (D,F#,A), Em (E,G,B), F#dim (F#,A,C)",
+        "Thống kê nốt nhạc": "A(Am,D,F#dim), B(G,Bm), C(Am,C), D(G,D), E(Am,Em), F#(Bm,F#dim), G(G,C,Em)"
+    },
+    {
+        "Âm giai": "G minor (Sol thứ)",
+        "Dấu hiệu nhận biết": "2 dấu giáng (Bb, Eb)",
+        "Nốt trong âm giai": "G - A - Bb - C - D - Eb - F",
+        "Hợp âm": "Gm, Adim, Bb, Cm, Dm, Eb, F",
+        "Cấu tạo hợp âm": "Gm (G,Bb,D), Adim (A,C,Eb), Bb (Bb,D,F), Cm (C,Eb,G), Dm (D,F,A), Eb (Eb,G,Bb), F (F,A,C)",
+        "Thống kê nốt nhạc": "A(Adim,Dm), Bb(Gm,Bb), C(Adim,Cm), D(Gm,Dm), Eb(Cm,Eb), F(Dm,F), G(Gm,Cm)"
+    },
+    {
+        "Âm giai": "G# major (Son thăng trưởng)",
+        "Dấu hiệu nhận biết": "8 dấu thăng (F#, C#, G#, D#, A#, E#, B#)",
+        "Nốt trong âm giai": "G#, A#, B#, C#, D#, E#, F##",
+        "Hợp âm": "G#, A#m, B#, C#, D#, E#m, F##dim",
+        "Cấu tạo hợp âm": "G# (G#,B#,D#), A#m (A#,C#,E#), B# (B#,D#,F#), C# (C#,E#,G#), D# (D#,F##,A#), E#m (E#,G#,B#), F##dim (F##,A#,C#)",
+        "Thống kê nốt nhạc": "A#(A#m,E#m), B#(G#,B#), C#(A#m,C#), D#(G#,D#), E#(A#m,E#m), F##(B#,F##dim), G#(G#,D#,F##dim)"
+    },
+    {
+        "Âm giai": "G# minor (Sol thăng thứ)",
+        "Dấu hiệu nhận biết": "5 dấu thăng (F#, C#, G#, D#, A#)",
+        "Nốt trong âm giai": "G#, A#, B, C#, D#, E, F#",
+        "Hợp âm": "G#m, A#dim, B, C#m, D#m, E, F#",
+        "Cấu tạo hợp âm": "G#m (G#,B,D#), A#dim (A#,C#,E), B (B,D#,F#), C#m (C#,E,G#), D#m (D#,F#,A#), E (E,G#,B), F# (F#,A#,C#)",
+        "Thống kê nốt nhạc": "A#(A#dim,C#m), B(G#m,B), C#(A#dim,C#m), D#(G#m,D#m), E(C#m,E), F#(B,D#m,F#), G#(G#m,D#m)"
+    }
+	]
+
+        function searchScale() {
+            const select = document.getElementById("scaleSelect");
+            const selectedScale = select.value;
+            const tableBody = document.querySelector("#resultTable tbody");
+            tableBody.innerHTML = "";
+
+            if (selectedScale === "all") {
+                data.forEach(item => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${item["Âm giai"]}</td>
+                        <td>${item["Dấu hiệu nhận biết"]}</td>
+                        <td>${item["Nốt trong âm giai"]}</td>
+                        <td>${item["Hợp âm"]}</td>
+                        <td>${item["Cấu tạo hợp âm"]}</td>
+                        <td>${item["Thống kê nốt nhạc"]}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                const result = data.find(item => item["Âm giai"].startsWith(selectedScale));
+                if (result) {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${result["Âm giai"]}</td>
+                        <td>${result["Dấu hiệu nhận biết"]}</td>
+                        <td>${result["Nốt trong âm giai"]}</td>
+                        <td>${result["Hợp âm"]}</td>
+                        <td>${result["Cấu tạo hợp âm"]}</td>
+                        <td>${result["Thống kê nốt nhạc"]}</td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            }
+        }
+    </script>
 </body>
 </html>
